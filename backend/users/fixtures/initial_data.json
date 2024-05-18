@@ -1,0 +1,74 @@
+[
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "last_login": "2024-05-17T15:21:36.469Z",
+    "is_superuser": false,
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-05-17T15:21:28.809Z",
+    "email": "test@test.com",
+    "username": "test",
+    "first_name": "test",
+    "last_name": "test",
+    "password": "pbkdf2_sha256$600000$8UNtyokZVZfeDdKUK8n0nS$CIayYDdGGLiKjmoOSAIPJ5AP7oyJyXcg2mjC0Fat4xA=",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "last_login": "2024-05-17T17:13:57Z",
+    "is_superuser": true,
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-05-17T15:24:28Z",
+    "email": "admin@test.com",
+    "username": "admin",
+    "first_name": "admin",
+    "last_name": "admin",
+    "password": "admin",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 3,
+  "fields": {
+    "last_login": "2024-05-17T17:41:56.067Z",
+    "is_superuser": false,
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-05-17T17:41:31.680Z",
+    "email": "ann@zebel.by",
+    "username": "Ann",
+    "first_name": "Аня",
+    "last_name": "Зыбель",
+    "password": "pbkdf2_sha256$600000$ruRDhnykdch0qM8Ned1aHa$FSJtRUHTrXs7U68W0Bq6EsLipJVYvU42aTelSGkQO1M=",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 4,
+  "fields": {
+    "last_login": "2024-05-17T17:45:33.162Z",
+    "is_superuser": false,
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-05-17T17:45:24.199Z",
+    "email": "striker_gimme0x@icloud.com",
+    "username": "Katty",
+    "first_name": "Катя",
+    "last_name": "Жук",
+    "password": "pbkdf2_sha256$600000$qZ9qq0MU3x1WhnZTt2i14r$/YoN+xrrxZp7t1OxrMrVJ18AofOJ64PUKqi+PCYU/Gc=",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

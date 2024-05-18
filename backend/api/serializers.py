@@ -1,16 +1,22 @@
 import base64
 
 from django.contrib.auth import get_user_model
+from django.core.files.base import ContentFile
 from django.db import transaction
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
-from django.core.files.base import ContentFile
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from rest_framework import serializers
 
-from recipes.models import (Tag, Ingredient, Recipe, User,
-                            RecipeIngredient, ShoppingCart, Favorite)
+from recipes.models import (
+    Favorite,
+    Ingredient,
+    Recipe,
+    RecipeIngredient,
+    ShoppingCart,
+    Tag,
+    User,
+)
 from users.models import Follow
-
 
 User = get_user_model()
 
@@ -164,7 +170,8 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
 
     def validate_tags(self, value):
         if not value:
-            raise serializers.ValidationError("Поле 'tags' не должно быть пустым.")
+            raise serializers.ValidationError(
+                "Поле 'tags' не должно быть пустым.")
         if len(value) != len(set(value)):
             raise serializers.ValidationError("Теги не должны повторяться.")
         return value
@@ -210,14 +217,15 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags', None)
-        ingredients = validated_data.pop('ingredients',  None)
+        ingredients = validated_data.pop('ingredients', None)
         if tags is None:
             raise serializers.ValidationError(
                 {"tags": "Поле 'tags' обязательно для обновления рецепта."})
         instance.tags.set(tags)
         if ingredients is None:
             raise serializers.ValidationError(
-                {"ingredients": "Поле 'ingredients' обязательно для обновления рецепта."})
+                {"ingredients": "Поле 'ingredients' "
+                                "обязательно для обновления рецепта."})
         instance.ingredients.clear()
         create_ingredients = [
             RecipeIngredient(
