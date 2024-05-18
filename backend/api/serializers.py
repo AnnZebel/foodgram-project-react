@@ -8,6 +8,7 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag, User)
 from rest_framework import serializers
+
 from users.models import Follow
 
 User = get_user_model()
