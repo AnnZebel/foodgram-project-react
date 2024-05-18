@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
+
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrAdminOrReadOnly
@@ -149,8 +150,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND)
 
         if request.method == 'POST':
-            if ShoppingCart.objects.filter(
-              user=request.user, recipe=recipe).exists():
+            if ShoppingCart.objects.filter(user=request.user,
+                                           recipe=recipe).exists():
                 return Response({
                     'error': 'Рецепт уже добавлен в список покупок.'},
                     status=status.HTTP_400_BAD_REQUEST)
