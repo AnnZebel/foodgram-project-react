@@ -1,6 +1,5 @@
 import base64
 
-from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -10,8 +9,6 @@ from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
 from rest_framework import serializers
 
 from users.models import Follow
-
-User = get_user_model()
 
 
 class Base64ImageField(serializers.ImageField):
