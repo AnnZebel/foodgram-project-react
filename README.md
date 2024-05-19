@@ -12,8 +12,8 @@ http://foodgramblog.ddns.net/
 
 # Логин и пароль администратора:
 ```
-почта: admin@test.com
-пароль: admin
+почта: ann@test.com
+пароль: a1h7k88a
 ```
 
 # Инструкция по запуску:
