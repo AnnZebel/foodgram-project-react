@@ -36,7 +36,8 @@ class CustomUserViewSet(UserViewSet):
         author = get_object_or_404(User, pk=id)
 
         if request.method == 'POST':
-            serializer = self.get_serializer(data={'user': user, 'author': author})
+            serializer = self.get_serializer(
+                data={'user': user, 'author': author})
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
