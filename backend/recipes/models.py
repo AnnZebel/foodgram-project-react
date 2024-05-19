@@ -1,8 +1,11 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 User = get_user_model()
+
+MIN_AMOUNT = 1
+MAX_AMOUNT = 32000
 
 
 class Tag(models.Model):
@@ -22,6 +25,7 @@ class Tag(models.Model):
     )
 
     class Meta:
+        ordering = ['name']
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
 
@@ -40,6 +44,7 @@ class Ingredient(models.Model):
     )
 
     class Meta:
+        ordering = ['name']
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
@@ -60,8 +65,16 @@ class RecipeIngredient(models.Model):
     )
     amount = models.IntegerField(
         'Количество',
-        validators=[MinValueValidator(1)]
+        validators=[
+            MinValueValidator(MIN_AMOUNT),
+            MaxValueValidator(MAX_AMOUNT)
+        ]
     )
+
+    class Meta:
+        ordering = ['recipe']
+        verbose_name = 'Ингредиент рецепта'
+        verbose_name_plural = 'Ингредиенты рецепта'
 
     def __str__(self):
         return f'{self.ingredient} {self.recipe}'
@@ -87,7 +100,10 @@ class Recipe(models.Model):
     )
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления',
-        validators=[MinValueValidator(1)]
+        validators=[
+            MinValueValidator(MIN_AMOUNT),
+            MaxValueValidator(MAX_AMOUNT)
+        ]
     )
     tags = models.ManyToManyField(
         Tag,
@@ -129,6 +145,7 @@ class ShoppingCart(models.Model):
     )
 
     class Meta:
+        ordering = ['recipe']
         verbose_name = 'Корзина покупок'
         verbose_name_plural = 'корзины покупок'
         constraints = (
@@ -154,6 +171,7 @@ class Favorite(models.Model):
     )
 
     class Meta:
+        ordering = ['recipe']
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
         constraints = (

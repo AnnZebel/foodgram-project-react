@@ -7,13 +7,14 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost', 'https://foodgramblog.ddns.net', 'http://localhost:8000']
+
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'default')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['51.250.104.27', '127.0.0.1', 'localhost', 'foodgramblog.ddns.net']
-
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='foodgramblog.ddns.net').split(',')
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
