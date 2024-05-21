@@ -47,7 +47,7 @@ class CustomUserSerializer(UserSerializer):
         request = self.context.get('request')
         if not request or request.user.is_anonymous:
             return False
-        return obj.followers.filter(user=request.user).exists()
+        return obj.following.filter(user=request.user).exists()
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
@@ -82,7 +82,7 @@ class FollowSerializer(CustomUserSerializer):
     def validate(self, data):
         if data['user'] == data['author']:
             raise serializers.ValidationError(
-                'Нельзя подписаться на самого себя!')
+                "Нельзя подписаться на самого себя!")
         return data
 
 

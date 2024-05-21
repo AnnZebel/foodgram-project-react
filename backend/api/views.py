@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from rest_framework import status, viewsets
+from rest_framework import exceptions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
@@ -35,18 +35,25 @@ class CustomUserViewSet(UserViewSet):
         user = self.request.user
         author = get_object_or_404(User, pk=id)
 
-        if request.method == 'POST':
-            serializer = self.get_serializer(
-                data={'user': user, 'author': author})
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if self.request.method == 'POST':
+            if user.following.filter(author=author).exists():
+                raise exceptions.ValidationError(
+                    'Вы уже подписаны на этого автора!'
+                )
+            Follow.objects.create(user=user, author=author)
+            serializer = self.get_serializer(author)
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
 
-        elif request.method == 'DELETE':
-            subscription = get_object_or_404(Follow, user=user, author=author)
+        if self.request.method == 'DELETE':
+            if not user.followers.filter(author=author).exists():
+                raise exceptions.ValidationError(
+                    'Подписка не была оформлена, либо уже удалена'
+                )
+            subscription = get_object_or_404(Follow, user=user,
+                                             author=author)
             subscription.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @action(detail=False, methods=['get'],
@@ -97,7 +104,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 recipe, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        elif request.method == "DELETE":
+        elif request.method == 'DELETE':
             favorite = request.user.favorites.filter(recipe=recipe).first()
             if favorite is None:
                 return Response({'error': 'Рецепта нет в избранном.'},
@@ -124,7 +131,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer = FavoriteOrShoppingCartSerializer(
                 recipe, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        elif request.method == "DELETE":
+        elif request.method == 'DELETE':
             shopping_cart = request.user.shopping_carts.filter(
                 recipe=recipe).first()
             if shopping_cart is None:
